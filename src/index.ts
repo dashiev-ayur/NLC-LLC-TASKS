@@ -2,17 +2,23 @@ import { Elysia } from "elysia";
 import { config } from "./infrastructure/config/env";
 import { closeDB, getDB } from "./infrastructure/database/connection";
 import { closeRedis, getRedis } from "./infrastructure/cache/connection";
+import { errorHandler } from "./infrastructure/http/middleware/error-handler";
 
 async function bootstrap() {
   try {
+    // PostgreSQL и Redis подключения
     getDB();
     getRedis();
 
+    // Elysia
     const app = new Elysia()
       .get("/", () => ({ message: "Привет медвед !" }))
+      .onError(errorHandler)
       .listen(config.app.port);
 
-    console.log(`Сервер запущен на ${app.server?.hostname}:${app.server?.port}`);
+    console.log(
+      `Сервер запущен на ${app.server?.hostname}:${app.server?.port}`
+    );
 
     // Обработка сигналов завершения
     const shutdown = async (signal: string) => {

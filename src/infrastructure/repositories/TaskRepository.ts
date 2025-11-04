@@ -6,6 +6,7 @@ import type {
 } from "../../domain/repositories/ITaskRepository";
 import type { Task, TaskStatus } from "../../domain/entities/Task";
 import type { getDB } from "../database/connection";
+import { RepositoryError } from "../errors/InfrastructureError";
 
 export class TaskRepository implements ITaskRepository {
   constructor(private db: ReturnType<typeof getDB>) {}
@@ -35,7 +36,7 @@ export class TaskRepository implements ITaskRepository {
     const result = await this.db.insert(tasks).values(taskData).returning();
     const inserted = result[0];
     if (!inserted) {
-      throw new Error("TaskRepository: результат сохранения задачи не найден");
+      throw new RepositoryError("TaskRepository: результат сохранения задачи не найден");
     }
     return this.mapToDomain(inserted);
   }
@@ -51,7 +52,7 @@ export class TaskRepository implements ITaskRepository {
 
     const updated = result[0];
     if (!updated) {
-      throw new Error("TaskRepository: результат обновления задачи не найден");
+      throw new RepositoryError("TaskRepository: результат обновления задачи не найден");
     }
     return this.mapToDomain(updated);
   }
@@ -59,7 +60,7 @@ export class TaskRepository implements ITaskRepository {
   async delete(id: number): Promise<void> {
     const result = await this.db.delete(tasks).where(eq(tasks.id, id)).returning();
     if (result.length === 0) {
-      throw new Error("TaskRepository: задача не найдена");
+      throw new RepositoryError("TaskRepository: задача не найдена");
     }
   }
 

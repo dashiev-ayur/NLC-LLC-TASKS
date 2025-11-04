@@ -1,11 +1,11 @@
+import type { INotificationService } from "../../domain/services/INotificationService";
 import { DueDate } from "../../domain/value-objects/DueDate";
-import { NotificationQueue } from "./NotificationQueue";
 
-export class NotificationSheduler {
+export class NotificationScheduler {
   private isRunning = false;
   private intervalId: NodeJS.Timeout | null = null;
 
-  constructor(private queue: NotificationQueue) {}
+  constructor(private notificationService: INotificationService) {}
 
   start(intervalMs: number = 5000): void {
     if (this.isRunning) {
@@ -33,7 +33,7 @@ export class NotificationSheduler {
   private async processNotifications(): Promise<void> {
     try {
       console.log("Processing notifications...");
-      const notification = await this.queue.getNextNotification();
+      const notification = await this.notificationService.getNextNotification();
 
       if (!notification) {
         return;

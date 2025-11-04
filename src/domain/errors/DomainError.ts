@@ -12,3 +12,14 @@ export class NotFoundDomainError extends DomainError {
   }
 }
 
+export class ValidationDomainError extends DomainError {
+  constructor(message: string = "Ошибка валидации") {
+    super(message);
+  }
+}
+
+export class BusinessRuleDomainError extends DomainError {
+  constructor(message: string = "Нарушение бизнес-правила") {
+    super(message);
+  }
+}

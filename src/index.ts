@@ -2,12 +2,12 @@ import { Elysia } from "elysia";
 import { config } from "./infrastructure/config/env";
 import { closeDB, getDB } from "./infrastructure/database/connection";
 import { closeRedis, getRedis } from "./infrastructure/cache/connection";
-import { errorHandler } from "./infrastructure/http/middleware/error-handler";
+import { errorHandler } from "./infrastructure/http/middleware/errorHandler";
 import { tasksRoutes } from "./infrastructure/http/routes/tasksRoutes";
 import { TaskService } from "./application/services/TaskService";
 import { TaskRepository } from "./infrastructure/repositories/TaskRepository";
 import { NotificationService } from "./infrastructure/cache/NotificationService";
-import { NotificationSheduler } from "./infrastructure/cache/NotificationSheduler";
+import { NotificationScheduler } from "./infrastructure/cache/NotificationScheduler";
 import { NotificationQueue } from "./infrastructure/cache/NotificationQueue";
 
 async function bootstrap() {
@@ -19,18 +19,18 @@ async function bootstrap() {
     // Создаем зависимости с DI
     const notificationQueue = new NotificationQueue(redis);
     const notificationService = new NotificationService(notificationQueue);
-    const notificationSheduler = new NotificationSheduler(notificationQueue);
+    const notificationScheduler = new NotificationScheduler(notificationService);
 
     console.log("Starting notification worker...");
-    notificationSheduler.start(5000);    
-    
+    notificationScheduler.start(5000);
+
     // Elysia
     const taskRepository = new TaskRepository(db);
     const taskService = new TaskService(taskRepository, notificationService);
     const app = new Elysia()
+      .onError(errorHandler)
       .get("/", () => ({ message: "Привет медвед !" }))
       .use(tasksRoutes(taskService))
-      .onError(errorHandler)
       .listen(config.app.port);
 
     console.log(
@@ -40,7 +40,7 @@ async function bootstrap() {
     // Обработка сигналов завершения
     const shutdown = async (signal: string) => {
       console.log(`\n${signal} получен, завершение работы...`);
-      notificationSheduler.stop();
+      notificationScheduler.stop();
       await closeRedis();
       await closeDB();
       process.exit(0);

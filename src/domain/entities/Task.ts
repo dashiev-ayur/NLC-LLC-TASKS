@@ -1,4 +1,5 @@
 import { DueDate } from "../value-objects/DueDate";
+import { ValidationDomainError, BusinessRuleDomainError } from "../errors/DomainError";
 
 export enum TaskStatus {
   PENDING = "pending",
@@ -30,15 +31,15 @@ export class TaskEntity {
 
   private validate(): void {
     if (!this.title || this.title.trim().length === 0) {
-      throw new Error("Заголовок задачи не может быть пустым");
+      throw new ValidationDomainError("Заголовок задачи не может быть пустым");
     }
 
     if (this.title.length > 255) {
-      throw new Error("Заголовок задачи не может превышать 255 символов");
+      throw new ValidationDomainError("Заголовок задачи не может превышать 255 символов");
     }
 
     if (this.description && this.description.length > 1000) {
-      throw new Error("Описание задачи не может превышать 1000 символов");
+      throw new ValidationDomainError("Описание задачи не может превышать 1000 символов");
     }
 
     if (this.dueDate){
@@ -46,7 +47,7 @@ export class TaskEntity {
     }
 
     if (this.status && !Object.values(TaskStatus).includes(this.status)) {
-      throw new Error("Статус задачи не корректный");
+      throw new BusinessRuleDomainError("Статус задачи не корректный");
     }
   }
 

@@ -1,31 +1,26 @@
 import type Redis from "ioredis";
+import type { Notification } from "../../domain/entities/Notification";
 
 const NOTIFICATION_QUEUE_KEY = "task:notifications:queue";
-
-export interface NotificationTask {
-  taskId: number;
-  taskTitle: string;
-  dueDate: string;
-}
 
 export class NotificationQueue {
   constructor(private redis: Redis) {}
 
-  async addNotification(task: NotificationTask): Promise<void> {
-    await this.redis.lpush(NOTIFICATION_QUEUE_KEY, JSON.stringify(task));
+  async addNotification(notification: Notification): Promise<void> {
+    await this.redis.lpush(NOTIFICATION_QUEUE_KEY, JSON.stringify(notification));
   }
 
-  async getNextNotification(): Promise<NotificationTask | null> {
+  async getNextNotification(): Promise<Notification | null> {
     const result = await this.redis.rpop(NOTIFICATION_QUEUE_KEY);
     if (!result) {
       return null;
     }
-    return JSON.parse(result) as NotificationTask;
+    return JSON.parse(result) as Notification;
   }
 
-  async getAllNotifications(): Promise<NotificationTask[]> {
+  async getAllNotifications(): Promise<Notification[]> {
     const results = await this.redis.lrange(NOTIFICATION_QUEUE_KEY, 0, -1);
-    return results.map((result) => JSON.parse(result) as NotificationTask);
+    return results.map((result) => JSON.parse(result) as Notification);
   }
 
   async clearQueue(): Promise<void> {

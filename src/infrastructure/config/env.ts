@@ -1,11 +1,12 @@
 import * as dotenv from "dotenv";
+import { ConfigError } from "../errors/InfrastructureError";
 
 dotenv.config();
 
 const getEnv = (key: string, defaultValue?: string): string => {
   const value = process.env[key];
   if (!value && defaultValue === undefined) {
-    throw new Error(`Переменная окружения ${key} не установлена`);
+    throw new ConfigError(`Переменная окружения ${key} не установлена`);
   }
   return value || defaultValue || "";
 };

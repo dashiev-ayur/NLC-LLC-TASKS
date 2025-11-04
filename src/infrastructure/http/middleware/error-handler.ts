@@ -1,7 +1,19 @@
 import { AppError } from "../../errors/AppError";
+import { NotFoundDomainError } from "../../../domain/errors/DomainError";
 
 export const errorHandler = ({ code, error, set, path }: any) => {
   console.error("Error Handler Middleware:", code, path);
+
+  // Обработка доменных ошибок
+  if (error instanceof NotFoundDomainError) {
+    set.status = 404;
+    return {
+      error: {
+        code: "NOT_FOUND",
+        message: error.message,
+      },
+    };
+  }
 
   if (error instanceof AppError) {
     set.status = error.statusCode;

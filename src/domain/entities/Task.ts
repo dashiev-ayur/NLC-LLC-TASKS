@@ -7,8 +7,8 @@ export interface Task {
   id: number;
   title: string;
   description: string;
-  status: TaskStatus;
-  dueDate: Date;
+  status: TaskStatus | null;
+  dueDate: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }

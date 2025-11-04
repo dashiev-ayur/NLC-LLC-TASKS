@@ -4,6 +4,8 @@ import { closeDB, getDB } from "./infrastructure/database/connection";
 import { closeRedis, getRedis } from "./infrastructure/cache/connection";
 import { errorHandler } from "./infrastructure/http/middleware/error-handler";
 import { tasksRoutes } from "./infrastructure/http/routes/tasks";
+import { TaskService } from "./application/services/TaskService";
+import { TaskRepository } from "./infrastructure/repositories/TaskRepository";
 
 async function bootstrap() {
   try {
@@ -11,10 +13,13 @@ async function bootstrap() {
     getDB();
     getRedis();
 
+    const taskRepository = new TaskRepository();
+    const taskService = new TaskService(taskRepository);
+    
     // Elysia
     const app = new Elysia()
       .get("/", () => ({ message: "Привет медвед !" }))
-      .use(tasksRoutes())
+      .use(tasksRoutes(taskService))
       .onError(errorHandler)
       .listen(config.app.port);
 

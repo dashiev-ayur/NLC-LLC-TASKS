@@ -14,3 +14,6 @@ export const tasks = table(
   },
   (table) => [t.index("status").on(table.title)]
 );
+
+export type TaskTable = typeof tasks.$inferSelect;
+export type NewTaskTable = typeof tasks.$inferInsert;

@@ -7,20 +7,25 @@ import type { CreateTaskDto } from "../dtos/CreateTaskDto";
 import { CreateTaskUseCase } from "../use-cases/CreateTaskUseCase";
 import type { UpdateTaskDto } from "../dtos/UpdateTaskDto";
 import { UpdateTaskUseCase } from "../use-cases/UpdateTaskUseCase";
+import { DeleteTaskUseCase } from "../use-cases/DeleteTaskUseCase";
+import type { INotificationService } from "../../domain/services/INotificationService";
 
 export class TaskService {
   private getTaskUseCase: GetTaskUseCase;
   private listTasksUseCase: ListTasksUseCase;
   private createTaskUseCase: CreateTaskUseCase;
   private updateTaskUseCase: UpdateTaskUseCase;
+  private deleteTaskUseCase: DeleteTaskUseCase;
 
   constructor(
     private readonly taskRepository: ITaskRepository,
+    private readonly notificationService: INotificationService,
   ) {
     this.getTaskUseCase = new GetTaskUseCase(taskRepository);
     this.listTasksUseCase = new ListTasksUseCase(taskRepository);
-    this.createTaskUseCase = new CreateTaskUseCase(taskRepository);
-    this.updateTaskUseCase = new UpdateTaskUseCase(taskRepository);
+    this.createTaskUseCase = new CreateTaskUseCase(taskRepository, notificationService);
+    this.updateTaskUseCase = new UpdateTaskUseCase(taskRepository, notificationService);
+    this.deleteTaskUseCase = new DeleteTaskUseCase(taskRepository);
   }
 
   async getById(id: number): Promise<Task> {
@@ -37,5 +42,9 @@ export class TaskService {
 
   async updateTask(id: number, dto: UpdateTaskDto): Promise<Task> {
     return await this.updateTaskUseCase.execute(id, dto);
+  }
+
+  async deleteTask(id: number): Promise<void> {
+    return await this.deleteTaskUseCase.execute(id);
   }
 }

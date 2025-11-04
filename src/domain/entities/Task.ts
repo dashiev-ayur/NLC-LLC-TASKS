@@ -41,7 +41,7 @@ export class TaskEntity {
 
     if (this.dueDate && this.dueDate < new Date()) {
       throw new Error(
-        "Дата выполнения задачи должна быть больше текущего времени"
+        `Дата выполнения задачи должна быть больше текущего времени ! ${new Date().toISOString()}`
       );
     }
 

@@ -11,7 +11,7 @@ export class DueDate {
     const dueDate = new Date(dateString);
     if (dueDate < new Date()) {
       throw new Error(
-        "Дата выполнения задачи должна быть больше текущего времени !"
+        `Дата выполнения задачи должна быть больше текущего времени ! ${new Date().toISOString()}`
       );
     }
     this.value = dueDate;

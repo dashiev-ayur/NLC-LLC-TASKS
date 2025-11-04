@@ -58,6 +58,13 @@ export class TaskRepository implements ITaskRepository {
     return this.mapToDomain(updated);
   }
 
+  async delete(id: number): Promise<void> {
+    const result = await this.db.delete(tasks).where(eq(tasks.id, id)).returning();
+    if (result.length === 0) {
+      throw new Error("TaskRepository: задача не найдена");
+    }
+  }
+
   private mapToDomain(row: TaskTable): Task {
     return {
       id: row.id,

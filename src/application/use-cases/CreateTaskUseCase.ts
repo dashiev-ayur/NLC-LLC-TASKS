@@ -3,9 +3,13 @@ import type { Task } from "../../domain/entities/Task";
 import { TaskEntity, TaskStatus } from "../../domain/entities/Task";
 import { DueDate } from "../../domain/value-objects/DueDate";
 import type { CreateTaskDto } from "../dtos/CreateTaskDto";
+import type { INotificationService } from "../../domain/services/INotificationService";
 
 export class CreateTaskUseCase {
-  constructor(private readonly taskRepository: ITaskRepository) {}
+  constructor(
+    private readonly taskRepository: ITaskRepository,
+    private readonly notificationService: INotificationService
+  ) {}
 
   async execute(dto: CreateTaskDto): Promise<Task> {
     const now = new Date();
@@ -29,12 +33,15 @@ export class CreateTaskUseCase {
     const createdTask = await this.taskRepository.create(task);
 
     // Проверяем через DueDate Value Object, нужно ли добавить в очередь уведомлений
-    // if (createdTask.dueDate) {
-    //   const dueDateVO = DueDate.create(createdTask.dueDate);
-    //   if (dueDateVO && dueDateVO.isWithin24Hours()) {
-    //     await this.notificationService.processTaskDueDateCheck(createdTask.id, createdTask.title, createdTask.dueDate);
-    //   }
-    // }
+    if (dueDate) {
+      const dueDateObject = new DueDate(dueDate.toISOString());
+      if (dueDateObject.isWithin24Hours()) {
+        const {id, title} = createdTask;
+        if (id && title && dueDate) {
+          await this.notificationService.processTaskDueDateCheck(id, title, dueDate);
+        }
+      }
+    }
 
     return createdTask;
   }

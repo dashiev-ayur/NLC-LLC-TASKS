@@ -9,4 +9,5 @@ export interface ITaskRepository {
   getListByFilters(filters?: TaskFilters): Promise<Task[]>;
   create(task: Task): Promise<Task>;
   update(id: number, task: Task): Promise<Task>;
+  delete(id: number): Promise<void>;
 }

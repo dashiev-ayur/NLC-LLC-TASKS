@@ -6,6 +6,7 @@ import { errorHandler } from "./infrastructure/http/middleware/error-handler";
 import { tasksRoutes } from "./infrastructure/http/routes/tasksRoutes";
 import { TaskService } from "./application/services/TaskService";
 import { TaskRepository } from "./infrastructure/repositories/TaskRepository";
+import { NotificationService } from "./infrastructure/cache/NotificationService";
 
 async function bootstrap() {
   try {
@@ -13,10 +14,13 @@ async function bootstrap() {
     getDB();
     getRedis();
 
-    const taskRepository = new TaskRepository();
-    const taskService = new TaskService(taskRepository);
-    
+    const notificationService = new NotificationService();
+    console.log("Starting notification worker...");
+    notificationService.start(5000);    
+  
     // Elysia
+    const taskRepository = new TaskRepository();
+    const taskService = new TaskService(taskRepository, notificationService);
     const app = new Elysia()
       .get("/", () => ({ message: "Привет медвед !" }))
       .use(tasksRoutes(taskService))
@@ -30,6 +34,7 @@ async function bootstrap() {
     // Обработка сигналов завершения
     const shutdown = async (signal: string) => {
       console.log(`\n${signal} получен, завершение работы...`);
+      notificationService.stop();
       await closeRedis();
       await closeDB();
       process.exit(0);

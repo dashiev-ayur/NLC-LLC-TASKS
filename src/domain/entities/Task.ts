@@ -1,3 +1,5 @@
+import { DueDate } from "../value-objects/DueDate";
+
 export enum TaskStatus {
   PENDING = "pending",
   COMPLETED = "completed",
@@ -39,10 +41,8 @@ export class TaskEntity {
       throw new Error("Описание задачи не может превышать 1000 символов");
     }
 
-    if (this.dueDate && this.dueDate < new Date()) {
-      throw new Error(
-        `Дата выполнения задачи должна быть больше текущего времени ! ${new Date().toISOString()}`
-      );
+    if (this.dueDate){
+      new DueDate(this.dueDate?.toISOString());
     }
 
     if (this.status && !Object.values(TaskStatus).includes(this.status)) {

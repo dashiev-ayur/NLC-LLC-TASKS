@@ -19,8 +19,6 @@ export class TaskRepository implements ITaskRepository {
     if (!result) {
       return null;
     }
-    console.log(result);
-
     return this.mapToDomain(result);
   }
 

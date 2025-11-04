@@ -46,9 +46,11 @@ export class NotificationService implements INotificationService {
         return;
       }
 
+      console.log("Notification:", notification);
       const { taskId, taskTitle, dueDate } = notification;
+
       if (dueDate) {
-        const dueDateObject = new DueDate(dueDate.toISOString());
+        const dueDateObject = new DueDate(dueDate);
         if (dueDateObject.isWithin24Hours()) {
           await this.sendNotification(taskId, taskTitle, dueDate);
         }
@@ -61,9 +63,9 @@ export class NotificationService implements INotificationService {
   private async sendNotification(
     taskId: number,
     taskTitle: string,
-    dueDate: Date
+    dueDate: string
   ): Promise<void> {
-    const message = `[${new Date().toISOString()}] Notification: Task № ${taskId}: "${taskTitle}" / ${dueDate.toISOString()}`;
+    const message = `[${new Date().toISOString()}] Notification: Task № ${taskId}: "${taskTitle}" / ${dueDate}`;
     try {
       // TODO: send notification to user
       // ...send notification to user via email, sms, etc.
@@ -78,6 +80,14 @@ export class NotificationService implements INotificationService {
     taskTitle: string,
     taskDueDate: Date
   ): Promise<void> {
-    console.log(`Task #${taskId}: ${taskTitle} / ${taskDueDate}`);
+    if (!taskDueDate) return;
+    const dueDateObject = new DueDate(taskDueDate.toISOString());
+    if (!dueDateObject.isWithin24Hours()) return;
+
+    await this.queue.addNotification({
+      taskId,
+      taskTitle,
+      dueDate: dueDateObject.getValue().toISOString(),
+    });
   }
 }

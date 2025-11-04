@@ -15,7 +15,11 @@ export class CreateTaskUseCase {
     const now = new Date();
 
     let dueDate: Date | null = null;
-    if (dto.dueDate) dueDate = new DueDate(dto.dueDate).getValue();
+    if (dto.dueDate) {
+      const dueDateObject = new DueDate(dto.dueDate);
+      dueDateObject.checkIsFuture();
+      dueDate = dueDateObject.getValue();
+    }
 
     // Создаем доменную сущность, которая автоматически валидирует данные
     const taskEntity = new TaskEntity(

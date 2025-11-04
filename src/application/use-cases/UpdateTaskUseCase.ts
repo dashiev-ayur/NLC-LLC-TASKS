@@ -38,7 +38,9 @@ export class UpdateTaskUseCase {
           : TaskStatus.PENDING;
     }
     if (dto.dueDate) {
-      updateData.dueDate = new DueDate(dto.dueDate).getValue();
+      const dueDateObject = new DueDate(dto.dueDate);
+      dueDateObject.checkIsFuture();
+      updateData.dueDate = dueDateObject.getValue();
     }
 
     // Создаем обновленную задачу с новыми данными
@@ -57,9 +59,13 @@ export class UpdateTaskUseCase {
     if (updateData.dueDate) {
       const dueDateObject = new DueDate(updateData.dueDate.toISOString());
       if (dueDateObject.isWithin24Hours()) {
-        const {id, title} = updatedTask;
+        const { id, title } = updatedTask;
         if (id && title && updateData.dueDate) {
-          await this.notificationService.processTaskDueDateCheck(id, title, updateData.dueDate);
+          await this.notificationService.processTaskDueDateCheck(
+            id,
+            title,
+            updateData.dueDate
+          );
         }
       }
     }

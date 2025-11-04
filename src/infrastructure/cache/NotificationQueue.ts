@@ -5,7 +5,7 @@ const NOTIFICATION_QUEUE_KEY = "task:notifications:queue";
 export interface NotificationTask {
   taskId: number;
   taskTitle: string;
-  dueDate: Date;
+  dueDate: string;
 }
 
 export class NotificationQueue {

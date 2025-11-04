@@ -2,13 +2,13 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-function getEnv(key: string, defaultValue?: string): string {
+const getEnv = (key: string, defaultValue?: string): string => {
   const value = process.env[key];
-  if (!value && !defaultValue) {
+  if (!value && defaultValue === undefined) {
     throw new Error(`Переменная окружения ${key} не установлена`);
   }
-  return value || defaultValue!;
-}
+  return value || defaultValue || "";
+};
 
 export const config = {
   database: {
@@ -17,7 +17,7 @@ export const config = {
   redis: {
     host: getEnv("REDIS_HOST", "localhost"),
     port: parseInt(getEnv("REDIS_PORT", "6379"), 10),
-    password: getEnv("REDIS_PASSWORD", undefined),
+    password: getEnv("REDIS_PASSWORD", "") || undefined,
   },
   app: {
     port: parseInt(getEnv("PORT", "3000"), 10),

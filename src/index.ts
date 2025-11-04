@@ -7,19 +7,25 @@ import { tasksRoutes } from "./infrastructure/http/routes/tasksRoutes";
 import { TaskService } from "./application/services/TaskService";
 import { TaskRepository } from "./infrastructure/repositories/TaskRepository";
 import { NotificationService } from "./infrastructure/cache/NotificationService";
+import { NotificationSheduler } from "./infrastructure/cache/NotificationSheduler";
+import { NotificationQueue } from "./infrastructure/cache/NotificationQueue";
 
 async function bootstrap() {
   try {
     // PostgreSQL и Redis подключения
-    getDB();
-    getRedis();
+    const db = getDB();
+    const redis = getRedis();
 
-    const notificationService = new NotificationService();
+    // Создаем зависимости с DI
+    const notificationQueue = new NotificationQueue(redis);
+    const notificationService = new NotificationService(notificationQueue);
+    const notificationSheduler = new NotificationSheduler(notificationQueue);
+
     console.log("Starting notification worker...");
-    notificationService.start(5000);    
-  
+    notificationSheduler.start(5000);    
+    
     // Elysia
-    const taskRepository = new TaskRepository();
+    const taskRepository = new TaskRepository(db);
     const taskService = new TaskService(taskRepository, notificationService);
     const app = new Elysia()
       .get("/", () => ({ message: "Привет медвед !" }))
@@ -34,7 +40,7 @@ async function bootstrap() {
     // Обработка сигналов завершения
     const shutdown = async (signal: string) => {
       console.log(`\n${signal} получен, завершение работы...`);
-      notificationService.stop();
+      notificationSheduler.stop();
       await closeRedis();
       await closeDB();
       process.exit(0);

@@ -4,6 +4,7 @@ import { TaskEntity, TaskStatus } from "../../domain/entities/Task";
 import { DueDate } from "../../domain/value-objects/DueDate";
 import type { UpdateTaskDto } from "../dtos/UpdateTaskDto";
 import type { INotificationService } from "../../domain/services/INotificationService";
+import { NotFoundDomainError } from "../../domain/errors/DomainError";
 
 export class UpdateTaskUseCase {
   constructor(
@@ -15,7 +16,7 @@ export class UpdateTaskUseCase {
     const existingTask = await this.taskRepository.getById(id);
 
     if (!existingTask) {
-      throw new Error(`UpdateTaskUseCase: задача с id ${id} не найдена`);
+      throw new NotFoundDomainError(`UpdateTaskUseCase: задача с id ${id} не найдена`);
     }
 
     // Создаем TaskEntity из существующей задачи для валидации

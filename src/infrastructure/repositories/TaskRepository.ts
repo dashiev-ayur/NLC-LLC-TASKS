@@ -1,14 +1,14 @@
 import { eq } from "drizzle-orm";
-import { getDB } from "../database/connection";
 import { tasks, type TaskTable } from "../database/schema";
 import type {
   ITaskRepository,
   TaskFilters,
 } from "../../domain/repositories/ITaskRepository";
 import type { Task, TaskStatus } from "../../domain/entities/Task";
+import type { getDB } from "../database/connection";
 
 export class TaskRepository implements ITaskRepository {
-  private db = getDB();
+  constructor(private db: ReturnType<typeof getDB>) {}
 
   async getById(id: number): Promise<Task | null> {
     const [result] = await this.db

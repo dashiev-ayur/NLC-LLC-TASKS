@@ -1,4 +1,4 @@
-import { getRedis } from "./connection";
+import type Redis from "ioredis";
 
 const NOTIFICATION_QUEUE_KEY = "task:notifications:queue";
 
@@ -9,7 +9,7 @@ export interface NotificationTask {
 }
 
 export class NotificationQueue {
-  private redis = getRedis();
+  constructor(private redis: Redis) {}
 
   async addNotification(task: NotificationTask): Promise<void> {
     await this.redis.lpush(NOTIFICATION_QUEUE_KEY, JSON.stringify(task));

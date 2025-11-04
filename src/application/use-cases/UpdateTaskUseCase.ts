@@ -1,0 +1,52 @@
+import type { ITaskRepository } from "../../domain/repositories/ITaskRepository";
+import type { Task } from "../../domain/entities/Task";
+import { TaskEntity, TaskStatus } from "../../domain/entities/Task";
+import { DueDate } from "../../domain/value-objects/DueDate";
+import type { UpdateTaskDto } from "../dtos/UpdateTaskDto";
+
+export class UpdateTaskUseCase {
+  constructor(private readonly taskRepository: ITaskRepository) {}
+
+  async execute(id: number, dto: UpdateTaskDto): Promise<Task> {
+    const existingTask = await this.taskRepository.getById(id);
+
+    if (!existingTask) {
+      throw new Error(`UpdateTaskUseCase: задача с id ${id} не найдена`);
+    }
+
+    // Создаем TaskEntity из существующей задачи для валидации
+    const existingTaskEntity = TaskEntity.fromDomain(existingTask);
+
+    const updateData: Partial<Task> = {
+      updatedAt: new Date(),
+    };
+
+    if (dto.title !== undefined) {
+      updateData.title = dto.title;
+    }
+    if (dto.description !== undefined) {
+      updateData.description = dto.description ?? "";
+    }
+    if (dto.status !== undefined) {
+      updateData.status =
+        dto.status === TaskStatus.COMPLETED
+          ? TaskStatus.COMPLETED
+          : TaskStatus.PENDING;
+    }
+    if (dto.dueDate) {
+      updateData.dueDate = new DueDate(dto.dueDate).getValue();
+    }
+
+    // Создаем обновленную задачу с новыми данными
+    const updatedTaskData: Task = {
+      ...existingTaskEntity,
+      ...updateData,
+    };
+
+    // Валидируем обновленную задачу через TaskEntity
+    const updatedTaskEntity = TaskEntity.fromDomain(updatedTaskData);
+    const taskToUpdate = updatedTaskEntity.toDomain();
+
+    return await this.taskRepository.update(id, taskToUpdate);
+  }
+}

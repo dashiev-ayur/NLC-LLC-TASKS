@@ -1,10 +1,10 @@
 export enum TaskStatus {
-  Pending = "pending",
-  Completed = "completed",
+  PENDING = "pending",
+  COMPLETED = "completed",
 }
 
 export interface Task {
-  id: number;
+  id?: number;
   title: string;
   description: string;
   status: TaskStatus | null;
@@ -15,11 +15,11 @@ export interface Task {
 
 export class TaskEntity {
   constructor(
-    public id: number,
+    public id: number | undefined,
     public title: string,
     public description: string,
-    public status: TaskStatus,
-    public dueDate: Date,
+    public status: TaskStatus | null,
+    public dueDate: Date | null,
     public createdAt: Date,
     public updatedAt: Date
   ) {
@@ -40,12 +40,37 @@ export class TaskEntity {
     }
 
     if (this.dueDate && this.dueDate < new Date()) {
-      throw new Error("Дата выполнения задачи должна быть больше текущего времени");
+      throw new Error(
+        "Дата выполнения задачи должна быть больше текущего времени"
+      );
     }
 
-    if (!Object.values(TaskStatus).includes(this.status)) {
+    if (this.status && !Object.values(TaskStatus).includes(this.status)) {
       throw new Error("Статус задачи не корректный");
     }
   }
 
+  toDomain(): Task {
+    return {
+      id: this.id,
+      title: this.title,
+      description: this.description,
+      dueDate: this.dueDate,
+      status: this.status,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+    };
+  }
+
+  static fromDomain(task: Task): TaskEntity {
+    return new TaskEntity(
+      task.id,
+      task.title,
+      task.description,
+      task.status,
+      task.dueDate,
+      task.createdAt,
+      task.updatedAt
+    );
+  }
 }

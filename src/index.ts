@@ -3,7 +3,7 @@ import { config } from "./infrastructure/config/env";
 import { closeDB, getDB } from "./infrastructure/database/connection";
 import { closeRedis, getRedis } from "./infrastructure/cache/connection";
 import { errorHandler } from "./infrastructure/http/middleware/error-handler";
-import { tasksRoutes } from "./infrastructure/http/routes/tasks";
+import { tasksRoutes } from "./infrastructure/http/routes/tasksRoutes";
 import { TaskService } from "./application/services/TaskService";
 import { TaskRepository } from "./infrastructure/repositories/TaskRepository";
 

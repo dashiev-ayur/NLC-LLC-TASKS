@@ -36,7 +36,9 @@ export class TaskRepository implements ITaskRepository {
     const result = await this.db.insert(tasks).values(taskData).returning();
     const inserted = result[0];
     if (!inserted) {
-      throw new RepositoryError("TaskRepository: результат сохранения задачи не найден");
+      throw new RepositoryError(
+        "TaskRepository: результат сохранения задачи не найден"
+      );
     }
     return this.mapToDomain(inserted);
   }
@@ -46,19 +48,24 @@ export class TaskRepository implements ITaskRepository {
 
     const result = await this.db
       .update(tasks)
-      .set({...taskData, updatedAt: new Date()})
+      .set({ ...taskData, updatedAt: new Date() })
       .where(eq(tasks.id, id))
       .returning();
 
     const updated = result[0];
     if (!updated) {
-      throw new RepositoryError("TaskRepository: результат обновления задачи не найден");
+      throw new RepositoryError(
+        "TaskRepository: результат обновления задачи не найден"
+      );
     }
     return this.mapToDomain(updated);
   }
 
   async delete(id: number): Promise<void> {
-    const result = await this.db.delete(tasks).where(eq(tasks.id, id)).returning();
+    const result = await this.db
+      .delete(tasks)
+      .where(eq(tasks.id, id))
+      .returning();
     if (result.length === 0) {
       throw new RepositoryError("TaskRepository: задача не найдена");
     }

@@ -1,7 +1,7 @@
-import { mock } from 'bun:test';
-import type { Task } from '../../../domain/entities/Task';
-import { NotFoundDomainError } from '../../../domain/errors/DomainError';
-import { createMockTask, createMockTaskList } from './testData';
+import { mock } from "bun:test";
+import type { Task } from "../../../domain/entities/Task";
+import { NotFoundDomainError } from "../../../domain/errors/DomainError";
+import { createMockTask, createMockTaskList } from "./testData";
 
 export type MockedTaskService = {
   getById: ReturnType<typeof mock>;
@@ -22,18 +22,29 @@ export class MockTaskServiceFactory {
     };
   }
 
-  static setupSuccessGetById(mockService: MockedTaskService, task?: Task): void {
+  static setupSuccessGetById(
+    mockService: MockedTaskService,
+    task?: Task
+  ): void {
     mockService.getById.mockResolvedValue(task ?? createMockTask());
   }
 
-  static setupNotFoundGetById(mockService: MockedTaskService, id: number): void {
+  static setupNotFoundGetById(
+    mockService: MockedTaskService,
+    id: number
+  ): void {
     mockService.getById.mockImplementation(async () => {
       throw new NotFoundDomainError(`Задача с id ${id} не найдена`);
     });
   }
 
-  static setupSuccessGetList(mockService: MockedTaskService, tasks?: Task[]): void {
-    mockService.getListByFilters.mockResolvedValue(tasks ?? createMockTaskList());
+  static setupSuccessGetList(
+    mockService: MockedTaskService,
+    tasks?: Task[]
+  ): void {
+    mockService.getListByFilters.mockResolvedValue(
+      tasks ?? createMockTaskList()
+    );
   }
 
   static setupSuccessCreate(mockService: MockedTaskService, task?: Task): void {
@@ -46,7 +57,9 @@ export class MockTaskServiceFactory {
 
   static setupNotFoundUpdate(mockService: MockedTaskService, id: number): void {
     mockService.updateTask.mockImplementation(async () => {
-      throw new NotFoundDomainError(`UpdateTaskUseCase: задача с id ${id} не найдена`);
+      throw new NotFoundDomainError(
+        `UpdateTaskUseCase: задача с id ${id} не найдена`
+      );
     });
   }
 
@@ -60,4 +73,3 @@ export class MockTaskServiceFactory {
     });
   }
 }
-

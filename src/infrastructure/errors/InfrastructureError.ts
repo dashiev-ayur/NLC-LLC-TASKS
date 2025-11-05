@@ -29,4 +29,3 @@ export class CacheError extends InfrastructureError {
     super(message, 500, "CACHE_ERROR");
   }
 }
-

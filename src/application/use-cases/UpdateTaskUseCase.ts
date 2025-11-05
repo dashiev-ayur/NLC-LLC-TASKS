@@ -16,7 +16,9 @@ export class UpdateTaskUseCase {
     const existingTask = await this.taskRepository.getById(id);
 
     if (!existingTask) {
-      throw new NotFoundDomainError(`UpdateTaskUseCase: задача с id ${id} не найдена`);
+      throw new NotFoundDomainError(
+        `UpdateTaskUseCase: задача с id ${id} не найдена`
+      );
     }
 
     // Создаем TaskEntity из существующей задачи для валидации

@@ -19,12 +19,18 @@ export class TaskService {
 
   constructor(
     private readonly taskRepository: ITaskRepository,
-    private readonly notificationService: INotificationService,
+    private readonly notificationService: INotificationService
   ) {
     this.getTaskUseCase = new GetTaskUseCase(taskRepository);
     this.listTasksUseCase = new ListTasksUseCase(taskRepository);
-    this.createTaskUseCase = new CreateTaskUseCase(taskRepository, notificationService);
-    this.updateTaskUseCase = new UpdateTaskUseCase(taskRepository, notificationService);
+    this.createTaskUseCase = new CreateTaskUseCase(
+      taskRepository,
+      notificationService
+    );
+    this.updateTaskUseCase = new UpdateTaskUseCase(
+      taskRepository,
+      notificationService
+    );
     this.deleteTaskUseCase = new DeleteTaskUseCase(taskRepository);
   }
 

@@ -40,9 +40,13 @@ export class CreateTaskUseCase {
     if (dueDate) {
       const dueDateObject = new DueDate(dueDate.toISOString());
       if (dueDateObject.isWithin24Hours()) {
-        const {id, title} = createdTask;
+        const { id, title } = createdTask;
         if (id && title && dueDate) {
-          await this.notificationService.processTaskDueDateCheck(id, title, dueDate);
+          await this.notificationService.processTaskDueDateCheck(
+            id,
+            title,
+            dueDate
+          );
         }
       }
     }

@@ -19,7 +19,9 @@ async function bootstrap() {
     // Создаем зависимости с DI
     const notificationQueue = new NotificationQueue(redis);
     const notificationService = new NotificationService(notificationQueue);
-    const notificationScheduler = new NotificationScheduler(notificationService);
+    const notificationScheduler = new NotificationScheduler(
+      notificationService
+    );
 
     console.log("Starting notification worker...");
     notificationScheduler.start(5000);

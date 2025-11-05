@@ -7,7 +7,10 @@ export class NotificationQueue {
   constructor(private redis: Redis) {}
 
   async addNotification(notification: Notification): Promise<void> {
-    await this.redis.lpush(NOTIFICATION_QUEUE_KEY, JSON.stringify(notification));
+    await this.redis.lpush(
+      NOTIFICATION_QUEUE_KEY,
+      JSON.stringify(notification)
+    );
   }
 
   async getNextNotification(): Promise<Notification | null> {

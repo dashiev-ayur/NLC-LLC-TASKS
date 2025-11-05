@@ -9,7 +9,8 @@ let db: ReturnType<typeof drizzle> | null = null;
 
 export function getDB() {
   if (db) return db;
-  if (!config.database.url) throw new ConfigError("DATABASE_URL не установлена в .env файле");
+  if (!config.database.url)
+    throw new ConfigError("DATABASE_URL не установлена в .env файле");
 
   pool = new Pool({
     connectionString: config.database.url,

@@ -19,7 +19,7 @@ export class DueDate {
   }
 
   checkIsFuture(): void {
-    if(this.value.getTime() < new Date().getTime()){
+    if (this.value.getTime() < new Date().getTime()) {
       throw new ValidationDomainError(
         `Дата выполнения ${this.value?.toISOString()} задачи должна быть больше текущего времени ! ${new Date().toISOString()}`
       );

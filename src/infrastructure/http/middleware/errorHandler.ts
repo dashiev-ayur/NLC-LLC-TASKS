@@ -1,18 +1,18 @@
 import { AppError } from "../../errors/AppError";
-import { 
-  NotFoundDomainError, 
-  ValidationDomainError, 
-  BusinessRuleDomainError 
+import {
+  NotFoundDomainError,
+  ValidationDomainError,
+  BusinessRuleDomainError,
 } from "../../../domain/errors/DomainError";
-import { 
-  RepositoryError, 
-  ConfigError, 
-  DatabaseError, 
-  CacheError 
+import {
+  RepositoryError,
+  ConfigError,
+  DatabaseError,
+  CacheError,
 } from "../../errors/InfrastructureError";
 import type { ErrorHandler } from "elysia";
 
-export const errorHandler: ErrorHandler  = ({ code, error, set, path }) => {
+export const errorHandler: ErrorHandler = ({ code, error, set, path }) => {
   console.error("Error Handler Middleware:", { code, path, error });
 
   // Маппинг доменных ошибок → HTTP ошибки
@@ -47,17 +47,20 @@ export const errorHandler: ErrorHandler  = ({ code, error, set, path }) => {
   }
 
   // Маппинг инфраструктурных ошибок → HTTP ошибки
-  if (error instanceof RepositoryError || 
-      error instanceof DatabaseError || 
-      error instanceof ConfigError || 
-      error instanceof CacheError) {
+  if (
+    error instanceof RepositoryError ||
+    error instanceof DatabaseError ||
+    error instanceof ConfigError ||
+    error instanceof CacheError
+  ) {
     set.status = 500;
     return {
       error: {
         code: error.code || "INTERNAL_SERVER_ERROR",
-        message: process.env.NODE_ENV === "production" 
-          ? "Internal server error" 
-          : error.message,
+        message:
+          process.env.NODE_ENV === "production"
+            ? "Internal server error"
+            : error.message,
       },
     };
   }
@@ -102,8 +105,8 @@ export const errorHandler: ErrorHandler  = ({ code, error, set, path }) => {
     error instanceof Error
       ? error.message
       : typeof error === "string"
-      ? error
-      : "Internal server error";
+        ? error
+        : "Internal server error";
 
   return {
     error: {

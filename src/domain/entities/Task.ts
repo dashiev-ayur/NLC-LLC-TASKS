@@ -1,5 +1,8 @@
 import { DueDate } from "../value-objects/DueDate";
-import { ValidationDomainError, BusinessRuleDomainError } from "../errors/DomainError";
+import {
+  ValidationDomainError,
+  BusinessRuleDomainError,
+} from "../errors/DomainError";
 
 export enum TaskStatus {
   PENDING = "pending",
@@ -35,14 +38,18 @@ export class TaskEntity {
     }
 
     if (this.title.length > 255) {
-      throw new ValidationDomainError("Заголовок задачи не может превышать 255 символов");
+      throw new ValidationDomainError(
+        "Заголовок задачи не может превышать 255 символов"
+      );
     }
 
     if (this.description && this.description.length > 1000) {
-      throw new ValidationDomainError("Описание задачи не может превышать 1000 символов");
+      throw new ValidationDomainError(
+        "Описание задачи не может превышать 1000 символов"
+      );
     }
 
-    if (this.dueDate){
+    if (this.dueDate) {
       new DueDate(this.dueDate?.toISOString());
     }
 

@@ -6,7 +6,9 @@ export function getTasksRoute(taskService: TaskService) {
   return new Elysia().get(
     "/",
     async ({ query }) => {
-      return await taskService.getListByFilters(query as unknown as TaskFilters);
+      return await taskService.getListByFilters(
+        query as unknown as TaskFilters
+      );
     },
     {
       query: t.Object({
@@ -17,4 +19,3 @@ export function getTasksRoute(taskService: TaskService) {
     }
   );
 }
-

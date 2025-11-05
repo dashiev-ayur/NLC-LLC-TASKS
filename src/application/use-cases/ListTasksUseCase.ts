@@ -1,8 +1,8 @@
 import type {
   ITaskRepository,
   TaskFilters,
-} from "../../domain/repositories/ITaskRepository";
-import type { Task } from "../../domain/entities/Task";
+} from "@domain/repositories/ITaskRepository";
+import type { Task } from "@domain/entities/Task";
 
 export class ListTasksUseCase {
   constructor(private readonly taskRepository: ITaskRepository) {}

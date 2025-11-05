@@ -1,6 +1,6 @@
 import { mock } from "bun:test";
-import type { Task } from "../../../domain/entities/Task";
-import { NotFoundDomainError } from "../../../domain/errors/DomainError";
+import type { Task } from "@domain/entities/Task";
+import { NotFoundDomainError } from "@domain/errors/DomainError";
 import { createMockTask, createMockTaskList } from "./testData";
 
 export type MockedTaskService = {

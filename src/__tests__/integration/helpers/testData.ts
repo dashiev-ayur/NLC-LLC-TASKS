@@ -1,5 +1,5 @@
-import type { Task } from "../../../domain/entities/Task";
-import { TaskStatus } from "../../../domain/entities/Task";
+import type { Task } from "@domain/entities/Task";
+import { TaskStatus } from "@domain/entities/Task";
 
 export const createMockTask = (overrides?: Partial<Task>): Task => {
   const now = new Date();

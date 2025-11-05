@@ -1,6 +1,6 @@
 import { Elysia, t } from "elysia";
-import { TaskService } from "../../../../application/services/TaskService";
-import { UpdateTaskDtoSchema } from "../../../../application/dtos/UpdateTaskDto";
+import { TaskService } from "@application/services/TaskService";
+import { UpdateTaskDtoSchema } from "@application/dtos/UpdateTaskDto";
 
 export function updateTaskRoute(taskService: TaskService) {
   return new Elysia().put(

@@ -1,5 +1,5 @@
 import { Elysia } from "elysia";
-import { TaskService } from "../../../application/services/TaskService";
+import { TaskService } from "@application/services/TaskService";
 import { getTasksRoute } from "./tasks/getTasksRoute";
 import { getTaskByIdRoute } from "./tasks/getTaskByIdRoute";
 import { createTaskRoute } from "./tasks/createTaskRoute";

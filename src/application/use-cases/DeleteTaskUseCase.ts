@@ -1,5 +1,5 @@
-import { NotFoundDomainError } from "../../domain/errors/DomainError";
-import type { ITaskRepository } from "../../domain/repositories/ITaskRepository";
+import { NotFoundDomainError } from "@domain/errors/DomainError";
+import type { ITaskRepository } from "@domain/repositories/ITaskRepository";
 
 export class DeleteTaskUseCase {
   constructor(private readonly taskRepository: ITaskRepository) {}

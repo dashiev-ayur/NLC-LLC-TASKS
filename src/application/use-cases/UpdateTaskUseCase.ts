@@ -1,10 +1,10 @@
-import type { ITaskRepository } from "../../domain/repositories/ITaskRepository";
-import type { Task } from "../../domain/entities/Task";
-import { TaskEntity, TaskStatus } from "../../domain/entities/Task";
-import { DueDate } from "../../domain/value-objects/DueDate";
+import type { ITaskRepository } from "@domain/repositories/ITaskRepository";
+import type { Task } from "@domain/entities/Task";
+import { TaskEntity, TaskStatus } from "@domain/entities/Task";
+import { DueDate } from "@domain/value-objects/DueDate";
 import type { UpdateTaskDto } from "../dtos/UpdateTaskDto";
-import type { INotificationService } from "../../domain/services/INotificationService";
-import { NotFoundDomainError } from "../../domain/errors/DomainError";
+import type { INotificationService } from "@domain/services/INotificationService";
+import { NotFoundDomainError } from "@domain/errors/DomainError";
 
 export class UpdateTaskUseCase {
   constructor(

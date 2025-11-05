@@ -1,11 +1,11 @@
 import "../../helpers/setup";
 import { describe, test, expect, beforeEach } from "bun:test";
-import { updateTaskRoute } from "../../../../infrastructure/http/routes/tasks/updateTaskRoute";
+import { updateTaskRoute } from "@infrastructure/http/routes/tasks/updateTaskRoute";
 import { MockTaskServiceFactory } from "../../helpers/MockTaskServiceFactory";
 import { RouteTestBase } from "../../helpers/RouteTestBase";
 import { createMockTask } from "../../helpers/testData";
-import { TaskStatus } from "../../../../domain/entities/Task";
-import { ValidationDomainError } from "../../../../domain/errors/DomainError";
+import { TaskStatus } from "@domain/entities/Task";
+import { ValidationDomainError } from "@domain/errors/DomainError";
 
 describe("PUT /tasks/:id - updateTaskRoute", () => {
   let mockTaskService: ReturnType<typeof MockTaskServiceFactory.create>;

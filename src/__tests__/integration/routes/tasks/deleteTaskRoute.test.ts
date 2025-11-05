@@ -1,6 +1,6 @@
 import "../../helpers/setup";
 import { describe, test, expect, beforeEach } from "bun:test";
-import { deleteTaskRoute } from "../../../../infrastructure/http/routes/tasks/deleteTaskRoute";
+import { deleteTaskRoute } from "@infrastructure/http/routes/tasks/deleteTaskRoute";
 import { MockTaskServiceFactory } from "../../helpers/MockTaskServiceFactory";
 import { RouteTestBase } from "../../helpers/RouteTestBase";
 

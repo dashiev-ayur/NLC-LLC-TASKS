@@ -3,7 +3,7 @@ import {
   NotFoundDomainError,
   ValidationDomainError,
   BusinessRuleDomainError,
-} from "../../../domain/errors/DomainError";
+} from "@domain/errors/DomainError";
 import {
   RepositoryError,
   ConfigError,

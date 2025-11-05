@@ -1,6 +1,6 @@
 import "../../helpers/setup";
 import { describe, test, expect, beforeEach } from "bun:test";
-import { getTasksRoute } from "../../../../infrastructure/http/routes/tasks/getTasksRoute";
+import { getTasksRoute } from "@infrastructure/http/routes/tasks/getTasksRoute";
 import { MockTaskServiceFactory } from "../../helpers/MockTaskServiceFactory";
 import { RouteTestBase } from "../../helpers/RouteTestBase";
 import { createMockTaskList } from "../../helpers/testData";

@@ -1,10 +1,10 @@
 import "../../helpers/setup";
 import { describe, test, expect, beforeEach } from "bun:test";
-import { createTaskRoute } from "../../../../infrastructure/http/routes/tasks/createTaskRoute";
+import { createTaskRoute } from "@infrastructure/http/routes/tasks/createTaskRoute";
 import { MockTaskServiceFactory } from "../../helpers/MockTaskServiceFactory";
 import { RouteTestBase } from "../../helpers/RouteTestBase";
 import { createMockTask } from "../../helpers/testData";
-import { ValidationDomainError } from "../../../../domain/errors/DomainError";
+import { ValidationDomainError } from "@domain/errors/DomainError";
 
 describe("POST /tasks - createTaskRoute", () => {
   let mockTaskService: ReturnType<typeof MockTaskServiceFactory.create>;

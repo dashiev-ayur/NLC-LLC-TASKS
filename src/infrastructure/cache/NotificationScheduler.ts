@@ -1,5 +1,5 @@
-import type { INotificationService } from "../../domain/services/INotificationService";
-import { DueDate } from "../../domain/value-objects/DueDate";
+import type { INotificationService } from "@domain/services/INotificationService";
+import { DueDate } from "@domain/value-objects/DueDate";
 import { InfrastructureError } from "../errors/InfrastructureError";
 
 export class NotificationScheduler {

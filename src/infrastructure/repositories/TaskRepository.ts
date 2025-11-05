@@ -3,8 +3,8 @@ import { tasks, type TaskTable } from "../database/schema";
 import type {
   ITaskRepository,
   TaskFilters,
-} from "../../domain/repositories/ITaskRepository";
-import type { Task, TaskStatus } from "../../domain/entities/Task";
+} from "@domain/repositories/ITaskRepository";
+import type { Task, TaskStatus } from "@domain/entities/Task";
 import type { getDB } from "../database/connection";
 import { RepositoryError } from "../errors/InfrastructureError";
 

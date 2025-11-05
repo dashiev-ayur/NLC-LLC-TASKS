@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
-import type { TaskService } from "../../../application/services/TaskService";
-import { errorHandler } from "../../../infrastructure/http/middleware/errorHandler";
+import type { TaskService } from "@application/services/TaskService";
+import { errorHandler } from "@infrastructure/http/middleware/errorHandler";
 import type { MockedTaskService } from "./MockTaskServiceFactory";
 
 export class RouteTestBase {

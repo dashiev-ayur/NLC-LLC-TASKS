@@ -1,14 +1,14 @@
 import { Elysia } from "elysia";
-import { config } from "./infrastructure/config/env";
-import { closeDB, getDB } from "./infrastructure/database/connection";
-import { closeRedis, getRedis } from "./infrastructure/cache/connection";
-import { errorHandler } from "./infrastructure/http/middleware/errorHandler";
-import { tasksRoutes } from "./infrastructure/http/routes/tasksRoutes";
-import { TaskService } from "./application/services/TaskService";
-import { TaskRepository } from "./infrastructure/repositories/TaskRepository";
-import { NotificationService } from "./infrastructure/cache/NotificationService";
-import { NotificationScheduler } from "./infrastructure/cache/NotificationScheduler";
-import { NotificationQueue } from "./infrastructure/cache/NotificationQueue";
+import { config } from "@infrastructure/config/env";
+import { closeDB, getDB } from "@infrastructure/database/connection";
+import { closeRedis, getRedis } from "@infrastructure/cache/connection";
+import { errorHandler } from "@infrastructure/http/middleware/errorHandler";
+import { tasksRoutes } from "@infrastructure/http/routes/tasksRoutes";
+import { TaskService } from "@application/services/TaskService";
+import { TaskRepository } from "@infrastructure/repositories/TaskRepository";
+import { NotificationService } from "@infrastructure/cache/NotificationService";
+import { NotificationScheduler } from "@infrastructure/cache/NotificationScheduler";
+import { NotificationQueue } from "@infrastructure/cache/NotificationQueue";
 
 function bootstrap() {
   try {

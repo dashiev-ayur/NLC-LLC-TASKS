@@ -1,6 +1,6 @@
-import type { ITaskRepository } from "../../domain/repositories/ITaskRepository";
-import type { Task } from "../../domain/entities/Task";
-import { NotFoundDomainError } from "../../domain/errors/DomainError";
+import type { ITaskRepository } from "@domain/repositories/ITaskRepository";
+import type { Task } from "@domain/entities/Task";
+import { NotFoundDomainError } from "@domain/errors/DomainError";
 
 export class GetTaskUseCase {
   constructor(private readonly taskRepository: ITaskRepository) {}

@@ -1,5 +1,5 @@
 import type Redis from "ioredis";
-import type { Notification } from "../../domain/entities/Notification";
+import type { Notification } from "@domain/entities/Notification";
 
 const NOTIFICATION_QUEUE_KEY = "task:notifications:queue";
 

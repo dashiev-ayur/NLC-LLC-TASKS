@@ -1,9 +1,9 @@
-import type { ITaskRepository } from "../../domain/repositories/ITaskRepository";
-import type { Task } from "../../domain/entities/Task";
-import { TaskEntity, TaskStatus } from "../../domain/entities/Task";
-import { DueDate } from "../../domain/value-objects/DueDate";
+import type { ITaskRepository } from "@domain/repositories/ITaskRepository";
+import type { Task } from "@domain/entities/Task";
+import { TaskEntity, TaskStatus } from "@domain/entities/Task";
+import { DueDate } from "@domain/value-objects/DueDate";
 import type { CreateTaskDto } from "../dtos/CreateTaskDto";
-import type { INotificationService } from "../../domain/services/INotificationService";
+import type { INotificationService } from "@domain/services/INotificationService";
 
 export class CreateTaskUseCase {
   constructor(

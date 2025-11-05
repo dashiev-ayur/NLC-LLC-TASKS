@@ -1,6 +1,6 @@
-import type { Notification } from "../../domain/entities/Notification";
-import type { INotificationService } from "../../domain/services/INotificationService";
-import { DueDate } from "../../domain/value-objects/DueDate";
+import type { Notification } from "@domain/entities/Notification";
+import type { INotificationService } from "@domain/services/INotificationService";
+import { DueDate } from "@domain/value-objects/DueDate";
 import { NotificationQueue } from "./NotificationQueue";
 
 export class NotificationService implements INotificationService {

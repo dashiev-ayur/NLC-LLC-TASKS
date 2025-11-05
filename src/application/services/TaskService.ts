@@ -1,14 +1,14 @@
 import { GetTaskUseCase } from "../use-cases/GetTaskUseCase";
 import { ListTasksUseCase } from "../use-cases/ListTasksUseCase";
-import type { TaskFilters } from "../../domain/repositories/ITaskRepository";
-import type { Task } from "../../domain/entities/Task";
-import type { ITaskRepository } from "../../domain/repositories/ITaskRepository";
+import type { TaskFilters } from "@domain/repositories/ITaskRepository";
+import type { Task } from "@domain/entities/Task";
+import type { ITaskRepository } from "@domain/repositories/ITaskRepository";
 import type { CreateTaskDto } from "../dtos/CreateTaskDto";
 import { CreateTaskUseCase } from "../use-cases/CreateTaskUseCase";
 import type { UpdateTaskDto } from "../dtos/UpdateTaskDto";
 import { UpdateTaskUseCase } from "../use-cases/UpdateTaskUseCase";
 import { DeleteTaskUseCase } from "../use-cases/DeleteTaskUseCase";
-import type { INotificationService } from "../../domain/services/INotificationService";
+import type { INotificationService } from "@domain/services/INotificationService";
 
 export class TaskService {
   private getTaskUseCase: GetTaskUseCase;

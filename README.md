@@ -50,3 +50,6 @@ bun test:coverage
 docker-compose down
 ```
 
+## Swagger
+
+Прикручена документация по API http://localhost:3000/swagger

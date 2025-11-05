@@ -10,7 +10,7 @@ import { NotificationService } from "./infrastructure/cache/NotificationService"
 import { NotificationScheduler } from "./infrastructure/cache/NotificationScheduler";
 import { NotificationQueue } from "./infrastructure/cache/NotificationQueue";
 
-async function bootstrap() {
+function bootstrap() {
   try {
     // PostgreSQL и Redis подключения
     const db = getDB();
@@ -47,16 +47,16 @@ async function bootstrap() {
       await closeDB();
       process.exit(0);
     };
-    process.on("SIGTERM", () => shutdown("SIGTERM"));
-    process.on("SIGINT", () => shutdown("SIGINT"));
+    process.on("SIGTERM", () => void shutdown("SIGTERM"));
+    process.on("SIGINT", () => void shutdown("SIGINT"));
 
     process.on("uncaughtException", (error) => {
       console.error("Необработанное исключение:", error);
-      shutdown("uncaughtException");
+      void shutdown("uncaughtException");
     });
     process.on("unhandledRejection", (reason, promise) => {
       console.error("Необработанное отклонение:", promise, "причина:", reason);
-      shutdown("unhandledRejection");
+      void shutdown("unhandledRejection");
     });
   } catch (error) {
     console.error("Ошибка при запуске приложения:", error);

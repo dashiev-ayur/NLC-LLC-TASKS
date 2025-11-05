@@ -5,10 +5,7 @@ import { MockTaskServiceFactory } from "../../helpers/MockTaskServiceFactory";
 import { RouteTestBase } from "../../helpers/RouteTestBase";
 import { createMockTask } from "../../helpers/testData";
 import { TaskStatus } from "../../../../domain/entities/Task";
-import {
-  NotFoundDomainError,
-  ValidationDomainError,
-} from "../../../../domain/errors/DomainError";
+import { ValidationDomainError } from "../../../../domain/errors/DomainError";
 
 describe("PUT /tasks/:id - updateTaskRoute", () => {
   let mockTaskService: ReturnType<typeof MockTaskServiceFactory.create>;

@@ -32,7 +32,7 @@ export class TaskRepository implements ITaskRepository {
   }
 
   async create(task: Task): Promise<Task> {
-    const { id, ...taskData } = task;
+    const { id: _id, ...taskData } = task;
     const result = await this.db.insert(tasks).values(taskData).returning();
     const inserted = result[0];
     if (!inserted) {
@@ -44,7 +44,7 @@ export class TaskRepository implements ITaskRepository {
   }
 
   async update(id: number, task: Task): Promise<Task> {
-    const { id: _id, createdAt, ...taskData } = task;
+    const { id: _id, createdAt: _createdAt, ...taskData } = task;
 
     const result = await this.db
       .update(tasks)

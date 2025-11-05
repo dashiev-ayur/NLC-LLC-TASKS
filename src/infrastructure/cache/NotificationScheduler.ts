@@ -1,5 +1,6 @@
 import type { INotificationService } from "../../domain/services/INotificationService";
 import { DueDate } from "../../domain/value-objects/DueDate";
+import { InfrastructureError } from "../errors/InfrastructureError";
 
 export class NotificationScheduler {
   private isRunning = false;
@@ -13,8 +14,9 @@ export class NotificationScheduler {
     }
     this.isRunning = true;
     console.log("Notification Service started");
-    this.intervalId = setInterval(async () => {
-      await this.processNotifications();
+
+    this.intervalId = setInterval(() => {
+      void this.processNotifications();
     }, intervalMs);
   }
 
@@ -63,8 +65,16 @@ export class NotificationScheduler {
       // TODO: send notification to user
       // ...send notification to user via email, sms, etc.
       console.info(message);
-    } catch (error) {
-      console.error("Error sending notification:", error);
+      return Promise.resolve();
+    } catch {
+      // TODO: handle error
+      return Promise.reject(
+        new InfrastructureError(
+          "Error sending notification",
+          500,
+          "NOTIFICATION_ERROR"
+        )
+      );
     }
   }
 }

@@ -36,9 +36,7 @@ export class UpdateTaskUseCase {
     }
     if (dto.status !== undefined) {
       updateData.status =
-        dto.status === TaskStatus.COMPLETED
-          ? TaskStatus.COMPLETED
-          : TaskStatus.PENDING;
+        dto.status === "completed" ? TaskStatus.COMPLETED : TaskStatus.PENDING;
     }
     if (dto.dueDate) {
       const dueDateObject = new DueDate(dto.dueDate);

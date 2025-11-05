@@ -28,10 +28,13 @@ describe("GET /tasks - getTasksRoute", () => {
       expect(Array.isArray(data)).toBe(true);
       expect(data).toHaveLength(3);
       // Elysia может передать пустой объект вместо undefined
-      const callArgs = mockTaskService.getListByFilters.mock.calls[0]?.[0];
+      const callArgs = mockTaskService.getListByFilters.mock
+        .calls[0]?.[0] as unknown;
       expect(
         callArgs === undefined ||
-          (callArgs && Object.keys(callArgs).length === 0)
+          (typeof callArgs === "object" &&
+            callArgs !== null &&
+            Object.keys(callArgs).length === 0)
       ).toBe(true);
     });
 

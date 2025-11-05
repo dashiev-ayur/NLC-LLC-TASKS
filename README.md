@@ -37,6 +37,10 @@ NODE_ENV=development
 # Разработка (с hot-reload)
 bun run dev
 
+# Eslint
+bun lint
+bun lint:fix
+
 # Запуск тестов
 bun test
 

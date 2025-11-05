@@ -4,4 +4,3 @@ import type { CreateTaskDto } from "@application/dtos/CreateTaskDto";
 export interface ICreateTaskUseCase {
   execute(dto: CreateTaskDto): Promise<Task>;
 }
-

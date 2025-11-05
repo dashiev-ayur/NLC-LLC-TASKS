@@ -23,7 +23,8 @@ export function getTasksRoute(taskService: TaskService) {
       detail: {
         tags: ["tasks"],
         summary: "Получить список задач",
-        description: "Возвращает список всех задач с возможностью фильтрации по статусу",
+        description:
+          "Возвращает список всех задач с возможностью фильтрации по статусу",
       },
     }
   );

@@ -15,4 +15,3 @@ export function mapTaskToResponse(task: Task) {
 export function mapTasksToResponse(tasks: Task[]) {
   return tasks.map(mapTaskToResponse);
 }
-

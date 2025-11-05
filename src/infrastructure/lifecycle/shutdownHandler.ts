@@ -34,13 +34,7 @@ export function setupShutdownHandlers(
   });
 
   process.on("unhandledRejection", (reason, promise) => {
-    console.error(
-      "Необработанное отклонение:",
-      promise,
-      "причина:",
-      reason
-    );
+    console.error("Необработанное отклонение:", promise, "причина:", reason);
     void shutdown("unhandledRejection");
   });
 }
-

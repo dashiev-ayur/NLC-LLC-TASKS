@@ -11,4 +11,3 @@ export const TaskResponseSchema = t.Object({
 });
 
 export const TaskListResponseSchema = t.Array(TaskResponseSchema);
-

@@ -50,7 +50,8 @@ export class TaskEntity {
     }
 
     if (this.dueDate) {
-      new DueDate(this.dueDate?.toISOString());
+      // проверка формата даты в ISO 8601: 2025-11-04T12:00:00Z
+      const _ = new DueDate(this.dueDate.toISOString());
     }
 
     if (this.status && !Object.values(TaskStatus).includes(this.status)) {

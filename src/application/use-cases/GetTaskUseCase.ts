@@ -1,8 +1,9 @@
 import type { ITaskRepository } from "@domain/repositories/ITaskRepository";
 import type { Task } from "@domain/entities/Task";
 import { NotFoundDomainError } from "@domain/errors/DomainError";
+import type { IGetTaskUseCase } from "./interfaces/IGetTaskUseCase";
 
-export class GetTaskUseCase {
+export class GetTaskUseCase implements IGetTaskUseCase {
   constructor(private readonly taskRepository: ITaskRepository) {}
 
   async execute(id: number): Promise<Task> {

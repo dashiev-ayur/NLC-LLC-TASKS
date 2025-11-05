@@ -5,11 +5,21 @@ export function deleteTaskRoute(taskService: TaskService) {
   return new Elysia().delete(
     "/:id",
     async ({ params }) => {
-      const { id } = params;
-      return await taskService.deleteTask(Number(id));
+      await taskService.deleteTask(params.id);
+      return { message: "Задача успешно удалена" };
     },
     {
-      params: t.Object({ id: t.Number() }),
+      params: t.Object({
+        id: t.Integer(),
+      }),
+      response: t.Object({
+        message: t.String(),
+      }),
+      detail: {
+        tags: ["tasks"],
+        summary: "Удалить задачу",
+        description: "Удаляет задачу по её идентификатору",
+      },
     }
   );
 }

@@ -3,6 +3,8 @@ import type { Task } from "@domain/entities/Task";
 import { NotFoundDomainError } from "@domain/errors/DomainError";
 import { createMockTask, createMockTaskList } from "./testData";
 
+// Тип для мокированного TaskService
+// Методы имеют совместимую сигнатуру с TaskService, но являются моками с дополнительными методами (mockResolvedValue, mockImplementation и т.д.)
 export type MockedTaskService = {
   getById: ReturnType<typeof mock>;
   getListByFilters: ReturnType<typeof mock>;

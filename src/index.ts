@@ -1,14 +1,16 @@
 import { Elysia } from "elysia";
+import { swagger } from "@elysiajs/swagger";
 import { config } from "@infrastructure/config/env";
-import { closeDB, getDB } from "@infrastructure/database/connection";
-import { closeRedis, getRedis } from "@infrastructure/cache/connection";
+import { getDB } from "@infrastructure/database/connection";
+import { getRedis } from "@infrastructure/cache/connection";
 import { errorHandler } from "@infrastructure/http/middleware/errorHandler";
 import { tasksRoutes } from "@infrastructure/http/routes/tasksRoutes";
-import { TaskService } from "@application/services/TaskService";
+import { TaskServiceFactory } from "@application/services/TaskServiceFactory";
 import { TaskRepository } from "@infrastructure/repositories/TaskRepository";
 import { NotificationService } from "@infrastructure/cache/NotificationService";
 import { NotificationScheduler } from "@infrastructure/cache/NotificationScheduler";
 import { NotificationQueue } from "@infrastructure/cache/NotificationQueue";
+import { setupShutdownHandlers } from "@infrastructure/lifecycle/shutdownHandler";
 
 function bootstrap() {
   try {
@@ -26,10 +28,34 @@ function bootstrap() {
     console.log("Starting notification worker...");
     notificationScheduler.start(5000);
 
-    // Elysia
+    // TaskRepository
     const taskRepository = new TaskRepository(db);
-    const taskService = new TaskService(taskRepository, notificationService);
+
+    // TaskService
+    const taskService = TaskServiceFactory.create(
+      taskRepository,
+      notificationService
+    );
+
+    // Elysia
     const app = new Elysia()
+      .use(
+        swagger({
+          documentation: {
+            info: {
+              title: "Task Management Service API",
+              version: "1.0.0",
+              description: "API для управления задачами",
+            },
+            tags: [
+              {
+                name: "tasks",
+                description: "Операции с задачами",
+              },
+            ],
+          },
+        })
+      )
       .onError(errorHandler)
       .get("/", () => ({ message: "Привет медвед !" }))
       .use(tasksRoutes(taskService))
@@ -39,24 +65,9 @@ function bootstrap() {
       `Сервер запущен на ${app.server?.hostname}:${app.server?.port}`
     );
 
-    // Обработка сигналов завершения
-    const shutdown = async (signal: string) => {
-      console.log(`\n${signal} получен, завершение работы...`);
-      notificationScheduler.stop();
-      await closeRedis();
-      await closeDB();
-      process.exit(0);
-    };
-    process.on("SIGTERM", () => void shutdown("SIGTERM"));
-    process.on("SIGINT", () => void shutdown("SIGINT"));
-
-    process.on("uncaughtException", (error) => {
-      console.error("Необработанное исключение:", error);
-      void shutdown("uncaughtException");
-    });
-    process.on("unhandledRejection", (reason, promise) => {
-      console.error("Необработанное отклонение:", promise, "причина:", reason);
-      void shutdown("unhandledRejection");
+    // Настройка graceful shutdown
+    setupShutdownHandlers({
+      notificationScheduler,
     });
   } catch (error) {
     console.error("Ошибка при запуске приложения:", error);

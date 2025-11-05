@@ -5,8 +5,10 @@ import { DueDate } from "@domain/value-objects/DueDate";
 import type { UpdateTaskDto } from "../dtos/UpdateTaskDto";
 import type { INotificationService } from "@domain/services/INotificationService";
 import { NotFoundDomainError } from "@domain/errors/DomainError";
+import type { IUpdateTaskUseCase } from "./interfaces/IUpdateTaskUseCase";
+import { checkAndNotifyTaskDueDate } from "./helpers/notificationHelper";
 
-export class UpdateTaskUseCase {
+export class UpdateTaskUseCase implements IUpdateTaskUseCase {
   constructor(
     private readonly taskRepository: ITaskRepository,
     private readonly notificationService: INotificationService
@@ -56,20 +58,10 @@ export class UpdateTaskUseCase {
 
     const updatedTask = await this.taskRepository.update(id, taskToUpdate);
 
-    // Проверяем через DueDate Value Object, нужно ли добавить в очередь уведомлений
-    if (updateData.dueDate) {
-      const dueDateObject = new DueDate(updateData.dueDate.toISOString());
-      if (dueDateObject.isWithin24Hours()) {
-        const { id, title } = updatedTask;
-        if (id && title && updateData.dueDate) {
-          await this.notificationService.processTaskDueDateCheck(
-            id,
-            title,
-            updateData.dueDate
-          );
-        }
-      }
-    }
+    // Проверяем и отправляем уведомление,
+    // если задача должна быть выполнена в течение 24 часов
+    await checkAndNotifyTaskDueDate(updatedTask, this.notificationService);
+
     return updatedTask;
   }
 }
